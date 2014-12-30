@@ -12,6 +12,7 @@
 
 class xScrape  {
 	private $_curl;
+	private $_curlOptions = array();
 	private $_url = null;
 	private $_cookie;
 	private $_regex = "_(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})_";
@@ -23,6 +24,9 @@ class xScrape  {
 	 * @return type
 	 */
 	public function __construct($url = null) {
+		if (! function_exists('curl_version')) {
+			exit('You must enable PHP cURL to use "'.__CLASS__.'"!');
+		}
 		if(isset($url)) {
 			if($this->testUrl($url)) {
 				$_url = $url;
@@ -33,6 +37,16 @@ class xScrape  {
 			exit('You must provide a valid URL to use "'.__CLASS__.'"!');
 		}
 		set_time_limit(0);
+		// set defult CURL OPTs
+		$this->_curlOptions = array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_CONNECTTIMEOUT => 10,
+			CURLOPT_USERAGENT => 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)',
+			CURLOPT_FOLLOWLOCATION => false,
+			CURLOPT_COOKIESESSION => true,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_FRESH_CONNECT => true
+		);
 	}
 
 	/**
@@ -49,13 +63,31 @@ class xScrape  {
 		return $output;
 	}
 
-
+	/**
+	 * Add any custom curl options, eg:
+	 * 
+	 * $params = array(
+	 *		CURLOPT_RETURNTRANSFER => 1,
+	 *		CURLOPT_CONNECTTIMEOUT => 10,
+	 *	);
+	 * 
+	 * This will overwrite any existing options
+	 * 
+	 * @param array $params 
+	 * @return boolean
+	 */
+	public function setCurl($params) {
+		if($this->_curlOptions = $params + $this->_curlOptions) {
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * Returns any errors created during class construction
 	 * @return string
 	 */
 	public function getError() {
-		return $this->_error;
+		return $this->_curlOptions;
 	}
 
 }
