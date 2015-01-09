@@ -83,6 +83,7 @@ class xScrape  {
 				);
 		$this->getPage($url, $params);
 		$this->setCurl(array(CURLOPT_COOKIEFILE => $this->_cookie_file));
+		return $this;
 	} 
 
 	/**
@@ -111,19 +112,33 @@ class xScrape  {
 		return $output;
 	}
 
-	public function xPath($x) {
-		$elements = $this->_mainXpath->query("//*[@id]");
-		foreach ($elements as $element) {
-    		echo "<br/>[". $element->nodeName. "]";
+	public function xPath($query, $returnValue) {
+		$results = $this->_mainXpath->query($query);
+		$output = array();
+		foreach ($results as $result) {
+			switch ($returnValue) {
+			 	case 'nodeValue':
+			 		$output[] = $result->nodeValue;
+			 		break;
+			 	case 'nodeName':
+			 		$output[] = $result->nodeName;
+			 		break;
+			 	default:
+			 		$output[] = $result->nodeValue;
+			 		break;
+			 } 
+			
     	}
-
+    	return $output;
 		//return $this->_mainXpath->query($x);
 	}
 
 	public function setDOM() {
 		$dom = new DOMDocument();
-		@$this->_mainDom = $dom->loadHTML($this->getPage());
+		@$dom->loadHTML($this->getPage());
+		$this->_mainDom = $dom;
 		@$this->_mainXpath = new DOMXPath($dom);
+		return $this;
 	}
 
 	/**

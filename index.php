@@ -1,5 +1,5 @@
 <?php
-require_once('xscrape\xScrape.php');
+require_once('xScrape.php');
 
 
 $xs = New xScrape('https://doi.crossref.org/servlet/submissionAdmin?sf=detail&submissionID=1369304897');
@@ -13,8 +13,6 @@ $auth = array(
 					)
 		);	
 
-$xs->setCookie($auth);
-echo  $xs->setDOM();
-
+print_r($xs->setCookie($auth)->setDOM()->xPath("//tr","nodeValue"));
 
 ?>
