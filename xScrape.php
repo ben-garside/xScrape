@@ -16,6 +16,7 @@ class xScrape  {
 	private $_cookie_file;
 	private $_regex = "_(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})_";
 	private $_mainDom = null;
+	private $_mainXpath = null;
 
 	/**
 	 * Initialize object
@@ -110,9 +111,19 @@ class xScrape  {
 		return $output;
 	}
 
+	public function xPath($x) {
+		$elements = $this->_mainXpath->query("//*[@id]");
+		foreach ($elements as $element) {
+    		echo "<br/>[". $element->nodeName. "]";
+    	}
+
+		//return $this->_mainXpath->query($x);
+	}
+
 	public function setDOM() {
 		$dom = new DOMDocument();
 		@$this->_mainDom = $dom->loadHTML($this->getPage());
+		@$this->_mainXpath = new DOMXPath($dom);
 	}
 
 	/**
