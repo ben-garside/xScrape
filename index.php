@@ -13,6 +13,7 @@ $auth = array(
 					)
 		);	
 
+print_r($xs->setCookie($auth)->setDOM()->xPath("//td/child::text()","nodeValue"));
 print_r($xs->setCookie($auth)->setDOM()->xPath("//tr","nodeValue"));
 
 ?>
