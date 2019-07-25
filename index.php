@@ -7,9 +7,9 @@ $xs = New xScrape('https://doi.crossref.org/servlet/submissionAdmin?sf=detail&su
 $auth = array(
 			'URL' => 'https://doi.crossref.org/servlet/useragent',
 			'POST' => array(
-						'usr' => 'bsri',
-						'pwd' => 'bsri925',
-						'func' => 'doLogin'
+						'usr' => '****',
+						'pwd' => '****',
+						'func' => '****'
 					)
 		);	
 
